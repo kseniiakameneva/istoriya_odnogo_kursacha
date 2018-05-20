@@ -1,5 +1,12 @@
 from django.shortcuts import render
+from prokat.models import Category, Product
 
 
-def hello_world(request):
-    return render(request, 'base.html', {})
+def base_view(request):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    context = {
+        'categories': categories,
+        'products': products
+    }
+    return render(request, 'base.html', context)
