@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="list-group">
+        {% for type in types %}
+            <a href="" class="list-group-item">{{ type.type }}</a>
+        {% endfor %}
+
+    </div>
+{% endblock content %}
