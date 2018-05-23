@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db import connection
 from prokat.models import Category, Product, Type
 
@@ -15,12 +15,7 @@ def base_view(request):
     return render(request, 'base.html', context)
 
 
-def product_view(request, product_slug):
-    product = Product.objects.get(slug=product_slug)
-    context = {
-        'product': product
-    }
-    return render(request, 'product.html', context)
+
 
 
 '''''''''
@@ -43,3 +38,10 @@ def prod_list(request, pk):
     return render(request, 'category.html', context)
 
 
+def rules_view(request):
+    return render(request, 'rules.html')
+
+
+def prod_detail(request,pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'prod_detail.html', {'product':product})

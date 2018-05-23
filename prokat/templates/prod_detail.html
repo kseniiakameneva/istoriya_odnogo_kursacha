@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="list-group">
+        {% for category in categories %}
+            <a href="{% url 'category' pk=category.pk %}" class="list-group-item">{{ category.title }}</a>
+        {% endfor %}
+
+
+    </div>
+
+    </div>
+
+ <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="col-sm-5">
+
+            <img src="{{ product.image.url }}" alt="" style='width:100%; height: 500px'>
+            <div class="col-sm-8">
+                <h4 class="text-center">{{ product.title }} </h4>
+                <p>{% lorem %}</p>
+                <p>{% lorem %}</p>
+                <p>Цена:{{ product.title }} грн.</p>
+
+                <p>{{ product.description }}</p>
+
+            </div>
+
+    </div>
+
+{% endblock content %}
