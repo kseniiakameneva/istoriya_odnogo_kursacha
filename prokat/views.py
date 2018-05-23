@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db import connection
 from prokat.models import Category, Product, Type
 
 
@@ -22,23 +23,15 @@ def product_view(request, product_slug):
     return render(request, 'product.html', context)
 
 
-
 '''''''''
-def category_view(request, category_slug):
-    category = Category.objects.get(slug=category_slug)
-    context = {
-        'category': category
-    }
-    return render(request, 'category.html', context)
-
-
-
-def category(request, pk):
-    categories = Category.objects.all()
-    return render(request, 'category.html', {'categories': categories})
-'''''
-
-
 def type_l(request, pk):
     types = Type.objects.all()
     return render(request, 'category.html', {'types': types})
+'''''
+
+
+def prod_list(request, pk):
+    products = Product.objects.filter(category=pk)
+    return render(request, 'category.html', {'products': products})
+
+
