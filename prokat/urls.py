@@ -8,4 +8,3 @@ urlpatterns = [
 
     url(r'^$', base_view, name='base'),
 ]
- 

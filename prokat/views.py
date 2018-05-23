@@ -22,6 +22,7 @@ def product_view(request, product_slug):
     return render(request, 'product.html', context)
 
 
+
 '''''''''
 def category_view(request, category_slug):
     category = Category.objects.get(slug=category_slug)
