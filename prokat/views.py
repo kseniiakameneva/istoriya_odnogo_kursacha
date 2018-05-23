@@ -27,11 +27,19 @@ def product_view(request, product_slug):
 def type_l(request, pk):
     types = Type.objects.all()
     return render(request, 'category.html', {'types': types})
+    
+    
 '''''
 
 
 def prod_list(request, pk):
     products = Product.objects.filter(category=pk)
-    return render(request, 'category.html', {'products': products})
+    categories = Category.objects.all()
+    context = {
+        'categories': categories,
+        'products': products,
+
+    }
+    return render(request, 'category.html', context)
 
 
