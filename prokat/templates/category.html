@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 <br>
 {% block content %}
-    <p class="lead">Все для спорта</p>
+    <p class="lead">Все товары в наличии</p>
     <div class="list-group">
         {% for category in categories %}
             <a href="{% url 'category' pk=category.pk %}" class="list-group-item">{{ category.title }}</a>
         {% endfor %}
+    <br>
+        <br>
 
 
     </div>

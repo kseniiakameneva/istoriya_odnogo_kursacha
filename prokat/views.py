@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.db import connection
 from prokat.models import Category, Product, Type
+from .forms import BookingForm
+from django.shortcuts import redirect
 
 
 def base_view(request):
@@ -28,7 +30,7 @@ def type_l(request, pk):
 
 
 def prod_list(request, pk):
-    products = Product.objects.filter(category=pk)
+    products = Product.objects.filter(category=pk, available=True)
     categories = Category.objects.all()
     context = {
         'categories': categories,
@@ -45,3 +47,16 @@ def rules_view(request):
 def prod_detail(request,pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'prod_detail.html', {'product':product})
+
+
+def booking_view(request):
+    form = BookingForm(request.POST or None)
+    if request.method == "POST":
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.save()
+            return redirect('prod_detail', pk=product.pk)
+    else:
+        form = BookingForm()
+    return render(request, 'booking.html', {'form': form})

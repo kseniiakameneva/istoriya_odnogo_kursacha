@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from transliterate import translit
@@ -44,10 +45,11 @@ def image_folder(instance, filename):
     filename = instance.title + '.' + filename.split('.')[1]
     return "{0}/{1}".format(instance.title, filename)
 
-
+'''''''''
 class ProductManager(models.Model):
     def all(self, *args, **kwargs):
         return super(ProductManager, self).get_queryset().filter(available=True)
+'''''
 
 
 class Product(models.Model):
@@ -67,4 +69,39 @@ class Product(models.Model):
 '''''''''
     def get_absolute_url(self):
         return reverse('product_detail', (), kwargs={'product.slug': self.slug})
+        
+
+        
+class BookedItem(models.Model):
+    product = models.ForeignKey(Product)
+    qty = models.PositiveIntegerField(default=1)
+    item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+    
+    def __str__(self):
+        return "BookedItem {0}".format(self.product.title)
+        
+        
+    class Cart(models.Model):
+    items = models.ManyToManyField(BookedItem)
+    cart_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+    
+    def __str__(self):
+        return str(self.id)
+
 '''''
+
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, verbose_name="Название снаряжения")
+    name = models.CharField("Ваше имя", max_length=100)
+    phone = models.IntegerField("Телефон")
+    comment = models.TextField("Ваш комментарий:")
+    date = models.DateField("Желаемая дата", auto_now_add=True)
+
+    def __str__(self):
+        return "Бронирование №{0}".format(str(self.id))
+
+
+
+
+
