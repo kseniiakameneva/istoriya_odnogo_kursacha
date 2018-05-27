@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from prokat.views import base_view, prod_list, rules_view, prod_detail,booking_view
+from prokat.views import base_view, prod_list, rules_view, prod_detail, booking_view, contact_view, thankyou_view
 
 urlpatterns = [
     # url(r'^category/(?P<category_slug>[-\w]+)/$', category_view, name='category_detail'),
@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^rules/', rules_view, name='rules'),
     url(r'^booking/', booking_view, name='booking'),
     url(r'^prod_detail/(?P<pk>\d+)/$', prod_detail, name='prod_detail'),
+    url(r'^contacts/', contact_view, name='contacts'),
+    url(r'^thankyou/', thankyou_view, name='thankyou'),
 
 ]

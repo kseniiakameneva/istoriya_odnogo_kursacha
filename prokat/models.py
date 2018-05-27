@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.admin import widgets
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from transliterate import translit
@@ -35,7 +36,8 @@ pre_save.connect(pre_save_category_slug, sender=Category)
 
 class Type(models.Model):
     type = models.CharField(max_length=200)
-    #category = models.ForeignKey(Category)
+
+    # category = models.ForeignKey(Category)
 
     def __str__(self):
         return self.type
@@ -44,6 +46,7 @@ class Type(models.Model):
 def image_folder(instance, filename):
     filename = instance.title + '.' + filename.split('.')[1]
     return "{0}/{1}".format(instance.title, filename)
+
 
 '''''''''
 class ProductManager(models.Model):
@@ -95,13 +98,9 @@ class Order(models.Model):
     product = models.ForeignKey(Product, verbose_name="Название снаряжения")
     name = models.CharField("Ваше имя", max_length=100)
     phone = models.IntegerField("Телефон")
-    comment = models.TextField("Ваш комментарий:")
-    date = models.DateField("Желаемая дата", auto_now_add=True)
+    comment = models.CharField("Ваш комментарий:", max_length=200, blank=True)
+    date = models.DateField("Дата начала поездки", default=timezone.now())
+    date_end = models.DateField("Дата начала поездки", default=timezone.now())
 
     def __str__(self):
         return "Бронирование №{0}".format(str(self.id))
-
-
-
-
-

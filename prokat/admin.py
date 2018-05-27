@@ -10,5 +10,5 @@ admin.site.register(Order)
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ["product", "name", "phone" "date"]
+    list_display = ["product", "name", "phone", "date"]
 

@@ -44,6 +44,14 @@ def rules_view(request):
     return render(request, 'rules.html')
 
 
+def contact_view(request):
+    return render(request, 'contacts.html')
+
+
+def thankyou_view(request):
+    return render(request, 'thankyou.html')
+
+
 def prod_detail(request,pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'prod_detail.html', {'product':product})
@@ -56,7 +64,7 @@ def booking_view(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.save()
-            return redirect('prod_detail', pk=product.pk)
+            return render(request, 'thankyou.html')
     else:
         form = BookingForm()
-    return render(request, 'booking.html', {'form': form})
+    return render(request,'booking.html', {'form': form})
