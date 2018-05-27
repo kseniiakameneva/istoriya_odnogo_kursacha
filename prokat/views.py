@@ -3,12 +3,14 @@ from django.db import connection
 from prokat.models import Category, Product, Type
 from .forms import BookingForm
 from django.shortcuts import redirect
+from django.db.models.expressions import RawSQL
+from django.db.models.query import QuerySet
 
 
 def base_view(request):
-    categories = Category.objects.all()
-    products = Product.objects.all()
-    types = Type.objects.all()
+    categories = Category.objects.raw('SELECT * FROM prokat_category ')
+    products = Product.objects.raw('SELECT * FROM prokat_product ')
+    types = Type.objects.raw('SELECT * FROM prokat_type ')
     context = {
         'categories': categories,
         'products': products,
@@ -17,21 +19,11 @@ def base_view(request):
     return render(request, 'base.html', context)
 
 
-
-
-
-'''''''''
-def type_l(request, pk):
-    types = Type.objects.all()
-    return render(request, 'category.html', {'types': types})
-    
-    
-'''''
-
-
 def prod_list(request, pk):
-    products = Product.objects.filter(category=pk, available=True)
-    categories = Category.objects.all()
+    #products = Product.objects.filter(category=pk, available=True)
+    products = Product.objects.raw("SELECT * FROM prokat_product WHERE (prokat_product.available = 1 AND prokat_product.category_id = %s)",(pk))
+   # print(products.query)
+    categories = Category.objects.raw('SELECT * FROM prokat_category ')
     context = {
         'categories': categories,
         'products': products,
@@ -52,9 +44,9 @@ def thankyou_view(request):
     return render(request, 'thankyou.html')
 
 
-def prod_detail(request,pk):
+def prod_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, 'prod_detail.html', {'product':product})
+    return render(request, 'prod_detail.html', {'product': product})
 
 
 def booking_view(request):
@@ -67,4 +59,4 @@ def booking_view(request):
             return render(request, 'thankyou.html')
     else:
         form = BookingForm()
-    return render(request,'booking.html', {'form': form})
+    return render(request, 'booking.html', {'form': form})

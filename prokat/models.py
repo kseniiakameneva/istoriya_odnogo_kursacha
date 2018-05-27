@@ -100,7 +100,7 @@ class Order(models.Model):
     phone = models.IntegerField("Телефон")
     comment = models.CharField("Ваш комментарий:", max_length=200, blank=True)
     date = models.DateField("Дата начала поездки", default=timezone.now())
-    date_end = models.DateField("Дата начала поездки", default=timezone.now())
+    date_end = models.DateField("Дата конца поездки", default=timezone.now())
 
     def __str__(self):
         return "Бронирование №{0}".format(str(self.id))
