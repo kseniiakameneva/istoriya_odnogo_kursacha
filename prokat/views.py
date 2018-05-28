@@ -1,10 +1,11 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404
 from django.db import connection
-from prokat.models import Category, Product, Type
+from prokat.models import Category, Product, Type, Order
 from .forms import BookingForm
 from django.views.generic import ListView
 from django.db.models import Q
+from datetime import datetime, timedelta
 from django.shortcuts import redirect
 
 
@@ -57,11 +58,36 @@ def booking_view(request):
         form = BookingForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            product.save()
-            return render(request, 'thankyou.html')
+            date1 = product.date
+            date2 = product.date_end
+            delta = date2 - date1
+            if delta.days >= 0:
+                id_pr = Product.objects.filter(title__contains=product.product)
+                '''''''''''
+                res = Order.objects.raw(
+                    'SELECT * FROM prokat_order WHERE prokat_order.product_id = %s '
+                    ' AND (prokat_order.date BETWEEN %s AND %s)'
+                    ' OR (prokat_order.date_end BETWEEN %s AND %s)  ', (id_pr, product.date,
+                                                                        product.date_end, product.date,
+                                                                        product.date_end))
+
+                #if HttpResponse(len(list(res))==0:
+                for r in res:
+                    print(res.title)
+                '''''
+                res = Order.objects.filter(Q(product=id_pr, date__range=(date1, date2))|Q(product=id_pr,
+                                                                                          date_end__range=(date1, date2)))
+                if res.count()==0:
+                    product.save()
+                    return render(request, 'thankyou.html')
+                else:
+                    return render(request, 'booking.html', {'form': form, 'text': 'На заданные даты товар недоступен!'})
+            else:
+                return render(request, 'booking.html', {'form': form, 'text': 'Заполните форму корректно!'})
+
     else:
         form = BookingForm()
-    return render(request, 'booking.html', {'form': form})
+        return render(request, 'booking.html', {'form': form})
 
 
 def get_queryset(request):
@@ -73,11 +99,11 @@ def get_queryset(request):
         # Если 'q' в GET запросе, фильтруем кверисет по данным из 'q'
         # products = queryset.filter(Q(title__icontains=q) |
         # Q(type__icontains=q))
-        q1=q.title()
+        q1 = q.title()
         id_type = Type.objects.filter(type__contains=q1)
         categories = Category.objects.raw('SELECT * FROM prokat_category ')
-        products = Product.objects.filter(Q(title__contains=q1) | Q(type = id_type ))
-            #"SELECT * FROM prokat_product WHERE prokat_product.title LIKE '%%%s%%' OR prokat_product.type_id =%s ", (q, q))
+        products = Product.objects.filter(Q(title__contains=q1) | Q(type=id_type))
+        # "SELECT * FROM prokat_product WHERE prokat_product.title LIKE '%%%s%%' OR prokat_product.type_id =%s ", (q, q))
         context = {
             'categories': categories,
             'products': products,
