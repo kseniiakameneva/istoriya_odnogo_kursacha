@@ -33,6 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
+
             </button>
             <a class="navbar-brand" href="http://127.0.0.1:8000">Все товары</a>
         </div>
@@ -51,6 +52,14 @@
                 </li>
 
             </ul>
+            <form class="navbar-form navbar-right" role="search" action="{% url "place_search" %}" method="GET">
+                <div class="form-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Поиск</button>
+            </form>
+
+
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -100,10 +109,30 @@
 
                     </div>
                     <br>
-                    <form action="{% url "place_search" %}" method="GET">
-                        <input type="text" name="q"/>
-                        <button type="submit">Поиск</button>
-                    </form>
+
+
+                    <table cellspacing="30" cellpadding="30">
+                        <tr>
+                            <td>
+                                <strong>Сортировка</strong>
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <form action="">
+                                    <input type="submit" value="↑"/>
+                                </form>
+                            </td>
+
+                            <td>
+                                <form action="">
+                                    <input type="submit" value="↓"/>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+
                     <br>
                     <div class="row">
 

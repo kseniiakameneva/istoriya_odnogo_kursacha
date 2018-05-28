@@ -84,4 +84,4 @@ def get_queryset(request):
             'q': q
         }
         return render(request, 'place_search.html', context)
-    return render(request, 'base.html')
+    return render(request, 'place_search.html')
