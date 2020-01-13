@@ -1,0 +1,57 @@
+<!-- TASK 12 -->
+
+
+
+<!-- XML FILE -->
+<?xml version = "1.0"?> 
+<?xml-stylesheet type = "text/xsl" href = "books.xsl"?> 
+<books> 
+   <book id = "1"> 
+      <title>Buratino</title> 
+      <author>On zhe</author> 
+      <price>0.0</price> 
+      <count>0</count> 
+   </book> 
+   <book id = "2"> 
+      <title>Malvina</title> 
+      <author>Ona zhe</author> 
+      <price>10.0</price> 
+      <count>5</count> 
+   </book> 
+</books>
+
+
+
+
+<!-- XSL FILE -->
+<?xml version = "1.0" encoding = "UTF-8"?> 
+<xsl:stylesheet version = "1.0" 
+   xmlns:xsl = "http://www.w3.org/1999/XSL/Transform">  
+	
+   <xsl:template match = "/"> 
+      <html> 
+         <body> 
+            <h2>Books</h2> 
+            <table border = "1"> 
+               <tr bgcolor = "#9acd32"> 
+                  <th>#</th> 
+                  <th>Название</th> 
+                  <th>Автор</th> 
+                  <th>Цена</th> 
+                  <th>Кол-во</th> 
+               </tr>
+					
+               <xsl:for-each select = "books/book"> 
+                  <tr> 
+                     <td><xsl:value-of select = "@id"/></td> 
+                     <td><xsl:value-of select = "title"/></td> 
+                     <td><xsl:value-of select = "author"/></td> 
+                     <td><xsl:value-of select = "price"/></td> 
+                     <td><xsl:value-of select = "count"/></td>
+                  </tr> 
+               </xsl:for-each> 
+            </table> 
+         </body> 
+      </html> 
+   </xsl:template>  
+</xsl:stylesheet>
