@@ -101,6 +101,13 @@ VARIANT WITH TEMPLATES
    <HTML>
       <BODY>
          <TABLE border="1" cellspacing="0" cellpadding="2">
+               <tr> 
+                  <th>#</th> 
+                  <th>Название</th> 
+                  <th>Автор</th> 
+                  <th>Цена</th> 
+                  <th>Кол-во</th> 
+               </tr>
             <xsl:apply-templates select="books/book">
                <xsl:sort select="@id"/>
             </xsl:apply-templates>
@@ -139,12 +146,8 @@ VARIANT WITH TEMPLATES
    <TD> <xsl:apply-templates /> </TD>
 </xsl:template>
 
-<xsl:template match="count">
-   <TD> <xsl:apply-templates /> </TD>
-</xsl:template>
 
 </xsl:stylesheet>
-
 
 
 
